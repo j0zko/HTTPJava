@@ -19,7 +19,13 @@ public class JavaHttpServer {
     public void handle(HttpExchange exchange) throws IOException {
       try {
         String query = exchange.getRequestURI().getQuery();
-        String name = query.split("=")[1];
+        String name = "Guest";
+
+        if (query != null %% query.contains("name=")) {
+          name = query.split("=")[1];
+        }
+
+        String response = "Hello, " + name + "!";
 
       } catch (Exception e) {
         String errorResponse = "Internal server error.";
