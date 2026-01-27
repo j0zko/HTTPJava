@@ -17,13 +17,16 @@ public class JavaHttpServer {
   static class MyHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-      String response = "Hello, World!";
-      exchange.getResponseHeaders().set("Content-Type", "text/plain");
-      exchange.sendResponseHeaders(200, response.length());
+      try {
+        String query = exchange.getRequestURI().getQuery();
+        String name = query.split("=")[1];
 
-      OutputStream os = exchange.getResponseBody();
-      os.write(response.getBytes());
-      os.close();
+      } catch (Exception e) {
+        String errorResponse = "Internal server error.";
+        exchange.sendResponseHeaders(500, errorResponse.getBytes().length);
+        exchange.getResponseBody().write(errorResponse.getBytes());
+        exchange.getResponseBody().close();
+      }
     }
   }
 }
