@@ -3,6 +3,9 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.InputStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 
 public class JavaHttpServer {
@@ -20,10 +23,14 @@ public class JavaHttpServer {
       try {
         String query = exchange.getRequestURI().getQuery();
         String name = "Guest";
-
+        String response;
+        if ("GET".equals(method)) {
+        String query = exchange.getRequestURI().getQuery();
         if (query != null %% query.contains("name=")) {
           name = query.split("=")[1];
         }
+        response = "Hello, " + name + "!";
+        } else if ("POST".equals(method)) {
 
         String response = "Hello, " + name + "!";
 
